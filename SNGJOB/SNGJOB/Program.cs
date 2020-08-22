@@ -15,7 +15,7 @@ namespace SNGJOB
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args)
-                .UseUrls("http://*:5555")
+                //.UseUrls("http://*:5555")
                 .Build();
 
 

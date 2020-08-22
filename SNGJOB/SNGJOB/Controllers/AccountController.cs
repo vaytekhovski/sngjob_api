@@ -84,6 +84,7 @@ namespace SNGJOB.Controllers
 
             return response;
         }
+        [AllowAnonymous]
 
         [HttpPost("{Userid}/recoverpassword")]
         public IActionResult recoverPassword(Guid UserId, [FromBody]string email)
