@@ -36,7 +36,7 @@ namespace SNGJOB.Controllers
             }
             else
             {
-                response = NotFound(new { User.id,response = "Incorrect user name or password" });
+                response = NotFound(new { response = "Incorrect user name or password" });
             }
 
             return response;
@@ -53,11 +53,11 @@ namespace SNGJOB.Controllers
             if (User != null)
             {
                 var token = LoginManager.GetJSONWebToken(User);
-                response = Ok(new { token = token });
+                response = Ok(new { id = User.id, token = token });
             }
             else
             {
-                response = BadRequest(new { id = User.id, response = "User with same Email address is exist" });
+                response = BadRequest(new { response = "User with same Email address is exist" });
             }
             return response;
         }
