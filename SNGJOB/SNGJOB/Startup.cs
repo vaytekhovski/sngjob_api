@@ -32,7 +32,7 @@ namespace SNGJOB
             services.AddSingleton(typeof(Security));
             services.AddSingleton(typeof(LoginManager));
             services.AddSingleton(typeof(UserManager));
-
+            services.AddSingleton(typeof(MailManager));
 
             services.AddCors(options =>
             {

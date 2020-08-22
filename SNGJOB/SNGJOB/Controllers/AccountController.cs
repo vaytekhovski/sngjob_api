@@ -36,7 +36,7 @@ namespace SNGJOB.Controllers
             }
             else
             {
-                response = NotFound(new { response = "Incorrect user name or password" });
+                response = NotFound(new { User.id,response = "Incorrect user name or password" });
             }
 
             return response;
@@ -57,7 +57,7 @@ namespace SNGJOB.Controllers
             }
             else
             {
-                response = BadRequest(new { response = "User with same Email address is exist" });
+                response = BadRequest(new { User.id, response = "User with same Email address is exist" });
             }
             return response;
         }
@@ -85,6 +85,12 @@ namespace SNGJOB.Controllers
             return response;
         }
 
+        [HttpPost("{Userid}/recoverpassword")]
+        public IActionResult recoverPassword(Guid UserId, [FromBody]string email)
+        {
+            return Ok(new { recover_token = LoginManager.RecoverPassword(UserId, email) }); ;
+
+        }
 
 
     }

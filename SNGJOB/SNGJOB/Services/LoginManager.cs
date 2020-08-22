@@ -9,12 +9,14 @@ namespace SNGJOB.Services
     {
         private IConfiguration configuration;
 
-        private Security Security;
-        public LoginManager(IConfiguration configuration, Security security)
+        private Security security;
+
+        private readonly MailManager mailManager;
+        public LoginManager(IConfiguration configuration, Security security, MailManager mailManager)
         {
             this.configuration = configuration;
-
-            Security = security;
+            this.mailManager = mailManager;
+            this.security = security;
         }
         public User AuthenticateUser(User login)
         {
@@ -24,7 +26,7 @@ namespace SNGJOB.Services
             {
                 user = db.users
                     .Where(x => x.email == login.email)
-                    .Where(x => x.password == Security.Hash(login.password))
+                    .Where(x => x.password == security.Hash(login.password))
                     .FirstOrDefault();
             }
 
@@ -36,7 +38,7 @@ namespace SNGJOB.Services
             User user = new User
             {
                 email = login.email,
-                password = Security.Hash(login.password),
+                password = security.Hash(login.password),
                 creationDate = DateTime.Now,
             };
 
@@ -71,7 +73,25 @@ namespace SNGJOB.Services
                 userDetail = db.user_details.FirstOrDefault(x => x.user.id == user.id);
                 userDetail.user = db.users.FirstOrDefault(x => x.id == user.id);
             }
-            return Security.GenerateJSONWebToken(userDetail, configuration);
+            return security.GenerateJSONWebToken(userDetail, configuration);
+        }
+
+        
+
+        public string RecoverPassword(Guid UserId, string email)
+        {
+            string passwordToken = "";
+            using(DatabaseContext db = new DatabaseContext())
+            {
+                var user = db.users.FirstOrDefault(x => x.id == UserId);
+                passwordToken = security.GenerateRandomKey(6);
+                user.passwordToken = passwordToken;
+                db.SaveChanges();
+            }
+
+            mailManager.SendEmailDefaul(email, passwordToken);
+
+            return passwordToken;
         }
     }
 }

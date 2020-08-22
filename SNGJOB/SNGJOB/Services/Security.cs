@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using SNGJOB.Models.UserModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -42,6 +43,26 @@ namespace SNGJOB.Services
 
             var EncodeToken = new JwtSecurityTokenHandler().WriteToken(Token);
             return EncodeToken;
+        }
+
+        private static Random random = new Random();
+
+        public static string RandomCharacter()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 1)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public string GenerateRandomKey(int lenth)
+        {
+            string secret = "";
+            for (int i = 0; i < lenth; i++)
+            {
+                secret += RandomCharacter();
+            }
+
+            return secret;
         }
 
 
