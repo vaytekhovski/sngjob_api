@@ -78,12 +78,12 @@ namespace SNGJOB.Services
 
         
 
-        public string RecoverPassword(Guid UserId, string email)
+        public string RecoverPassword(string email)
         {
             string passwordToken = "";
             using(DatabaseContext db = new DatabaseContext())
             {
-                var user = db.users.FirstOrDefault(x => x.id == UserId);
+                var user = db.users.FirstOrDefault(x => x.email == email);
                 passwordToken = security.GenerateRandomKey(6);
                 user.passwordToken = passwordToken;
                 db.SaveChanges();

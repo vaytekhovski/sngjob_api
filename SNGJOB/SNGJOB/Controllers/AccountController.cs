@@ -86,10 +86,10 @@ namespace SNGJOB.Controllers
         }
         [AllowAnonymous]
 
-        [HttpPost("{Userid}/recoverpassword")]
-        public IActionResult recoverPassword(Guid UserId, [FromBody]string email)
+        [HttpPost("{email}/recoverpassword")]
+        public IActionResult recoverPassword(string email)
         {
-            return Ok(new { recover_token = LoginManager.RecoverPassword(UserId, email) }); ;
+            return Ok(new { recover_token = LoginManager.RecoverPassword(email) }); ;
 
         }
 
