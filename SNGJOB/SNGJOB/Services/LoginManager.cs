@@ -100,7 +100,7 @@ namespace SNGJOB.Services
             string passwordToken = "";
             using(DatabaseContext db = new DatabaseContext())
             {
-                passwordToken = db.users.AsNoTracking().FirstOrDefault().passwordToken;
+                passwordToken = db.users.AsNoTracking().FirstOrDefault(x=>x.email == email).passwordToken;
             }
             return passwordToken;
         }
