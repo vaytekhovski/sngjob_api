@@ -13,7 +13,7 @@ namespace SNGJOB.Services
             this.logger = logger;
         }
 
-        public void SendEmailDefaul(string recipient, string messageText)
+        public void SendEmailDefaul(string recipient, string subject, string messageText)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace SNGJOB.Services
                 message.IsBodyHtml = true;
                 message.From = new MailAddress("jobfromsng@gmail.com", "SNGJOB");
                 message.To.Add(recipient);
-                message.Subject = "Восстановление пароля";
+                message.Subject = subject;
                 message.Body = messageText;
 
                 using (SmtpClient client = new SmtpClient("smtp.gmail.com"))
@@ -42,18 +42,7 @@ namespace SNGJOB.Services
             }
         }
 
-        public void SendEmailCustom()
-        {
-            try
-            {
-                logger.LogInformation("Сообщение отправлено успешно!");
-            }
-            catch (Exception e)
-            {
-
-                logger.LogError(e.GetBaseException().Message);
-            }
-        }
+        
 
     }
 }

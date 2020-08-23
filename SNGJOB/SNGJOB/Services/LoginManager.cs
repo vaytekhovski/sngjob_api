@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SNGJOB.Models.UserModels;
 using System;
 using System.Linq;
@@ -89,9 +90,50 @@ namespace SNGJOB.Services
                 db.SaveChanges();
             }
 
-            mailManager.SendEmailDefaul(email, passwordToken);
+            mailManager.SendEmailDefaul(email, "Восстановление пароля", passwordToken);
 
             return passwordToken;
         }
+
+        public string GetRecoverToken(string email)
+        {
+            string passwordToken = "";
+            using(DatabaseContext db = new DatabaseContext())
+            {
+                passwordToken = db.users.AsNoTracking().FirstOrDefault().passwordToken;
+            }
+            return passwordToken;
+        }
+
+
+        public string EmailConfirm(string email)
+        {
+            string emailToken = "";
+
+            using (DatabaseContext db = new DatabaseContext())
+            {
+                var user = db.users.AsNoTracking().FirstOrDefault(x => x.email == email);
+                emailToken = security.GenerateRandomKey(6);
+                var emailConfirm = db.email_confirm_tokens.FirstOrDefault(x => x.user_id == user.id);
+                emailConfirm.token = emailToken;
+                db.SaveChanges();
+            }
+
+            mailManager.SendEmailDefaul(email, "Подтверждение почты", emailToken);
+
+            return emailToken;
+        }
+
+        public string GetVerifyToken(string email)
+        {
+            string emailToken = "";
+            using(DatabaseContext db = new DatabaseContext())
+            {
+                emailToken = db.email_confirm_tokens.AsNoTracking().FirstOrDefault(x => x.user_id == db.users.AsNoTracking().FirstOrDefault(x => x.email == email).id).token;
+            }
+
+            return emailToken;
+        }
+
     }
 }

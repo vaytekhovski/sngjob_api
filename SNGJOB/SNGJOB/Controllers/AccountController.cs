@@ -89,8 +89,25 @@ namespace SNGJOB.Controllers
         [HttpPost("{email}/recoverpassword")]
         public IActionResult recoverPassword(string email)
         {
-            return Ok(new { recover_token = LoginManager.RecoverPassword(email) }); ;
+            return Ok(new { recover_token = LoginManager.RecoverPassword(email) });
+        }
 
+        [HttpGet("{email}/recoverpassword")]
+        public IActionResult RecoverToken(string email)
+        {
+            return Ok(new { recover_token = LoginManager.GetRecoverToken(email) });
+        }
+
+        [HttpPost("{email}/verifyemail")]
+        public IActionResult verifyEmail(string email)
+        {
+            return Ok(new { verify_token = LoginManager.EmailConfirm(email) });
+        }
+
+        [HttpGet("{email}/verifyemail")]
+        public IActionResult verifyToken(string email)
+        {
+            return Ok(new { recover_token = LoginManager.GetVerifyToken(email) });
         }
 
 

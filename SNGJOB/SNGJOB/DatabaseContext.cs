@@ -20,5 +20,6 @@ namespace SNGJOB
         public DbSet<UserEducation> user_educations { get; set; }
         public DbSet<Allie> allies { get; set; }
         public DbSet <UserEmployment> user_employments { get; set; }
+        public DbSet<EmailConfirmToken> email_confirm_tokens { get; set; }
     }
 }
