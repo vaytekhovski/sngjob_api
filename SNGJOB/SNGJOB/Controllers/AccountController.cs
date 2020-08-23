@@ -91,19 +91,19 @@ namespace SNGJOB.Controllers
         {
             return Ok(new { recover_token = LoginManager.RecoverPassword(email) });
         }
-
+        [AllowAnonymous]
         [HttpGet("{email}/recoverpassword")]
         public IActionResult RecoverToken(string email)
         {
             return Ok(new { recover_token = LoginManager.GetRecoverToken(email) });
         }
-
+        [AllowAnonymous]
         [HttpPost("{email}/verifyemail")]
         public IActionResult verifyEmail(string email)
         {
             return Ok(new { verify_token = LoginManager.EmailConfirm(email) });
         }
-
+        [AllowAnonymous]
         [HttpGet("{email}/verifyemail")]
         public IActionResult verifyToken(string email)
         {
