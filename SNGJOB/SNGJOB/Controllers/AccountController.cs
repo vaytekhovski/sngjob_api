@@ -36,7 +36,7 @@ namespace SNGJOB.Controllers
             {
                 var token = LoginManager.GetJSONWebToken(User);
                 response = Ok(new { id = User.id, token = token });
-                logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + user.id + "logged in");
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + User.id + "logged in");
             }
             else
             {
@@ -58,7 +58,7 @@ namespace SNGJOB.Controllers
             {
                 var token = LoginManager.GetJSONWebToken(User);
                 response = Ok(new { user = User });
-                logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + user.id + "created");
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + User.id + " created");
 
             }
             else
@@ -81,7 +81,7 @@ namespace SNGJOB.Controllers
                     response = NotFound();
                     break;
                 case "200":
-                    logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + UserId + "data changed");
+                    logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + UserId + "data changed");
                     response = Ok(new { response = $"User data for User {UserId} changed " });
                     break;
 
