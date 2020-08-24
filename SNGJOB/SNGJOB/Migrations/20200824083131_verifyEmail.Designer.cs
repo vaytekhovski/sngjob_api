@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SNGJOB;
 
 namespace SNGJOB.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200824083131_verifyEmail")]
+    partial class verifyEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +64,25 @@ namespace SNGJOB.Migrations
                     b.ToTable("contacts");
                 });
 
+            modelBuilder.Entity("SNGJOB.Models.UserModels.EmailConfirmToken", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("token")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid?>("ud_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ud_id");
+
+                    b.ToTable("email_confirm_tokens");
+                });
+
             modelBuilder.Entity("SNGJOB.Models.UserModels.User", b =>
                 {
                     b.Property<Guid>("id")
@@ -79,10 +100,6 @@ namespace SNGJOB.Migrations
 
                     b.Property<string>("email")
                         .HasColumnName("us_email")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("emailToken")
-                        .HasColumnName("us_email_token")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("password")
@@ -250,6 +267,13 @@ namespace SNGJOB.Migrations
                     b.HasOne("SNGJOB.Models.UserModels.User", "user")
                         .WithMany()
                         .HasForeignKey("cs_user_id");
+                });
+
+            modelBuilder.Entity("SNGJOB.Models.UserModels.EmailConfirmToken", b =>
+                {
+                    b.HasOne("SNGJOB.Models.UserModels.User", "user")
+                        .WithMany()
+                        .HasForeignKey("ud_id");
                 });
 
             modelBuilder.Entity("SNGJOB.Models.UserModels.UserDetail", b =>

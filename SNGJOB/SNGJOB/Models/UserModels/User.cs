@@ -19,6 +19,9 @@ namespace SNGJOB.Models.UserModels
 
         [Column("us_email")]
         public string email { get; set; }
+        [Column("us_email_token")]
+
+        public string emailToken { get; set; }
 
         [Column("us_phone")]
         public string phone { get; set; }

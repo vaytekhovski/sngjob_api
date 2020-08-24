@@ -89,25 +89,58 @@ namespace SNGJOB.Controllers
         [HttpPost("{email}/recoverpassword")]
         public IActionResult recoverPassword(string email)
         {
-            return Ok(new { recover_token = LoginManager.RecoverPassword(email) });
+            var recoverToken = LoginManager.RecoverPassword(email);
+            if(recoverToken != "404")
+            {
+                return Ok(new { recover_token = recoverToken });
+            }
+            else
+            {
+                return NotFound(new { user = "not found" });
+            }
+            
         }
         [AllowAnonymous]
         [HttpGet("{email}/recoverpassword")]
         public IActionResult RecoverToken(string email)
         {
-            return Ok(new { recover_token = LoginManager.GetRecoverToken(email) });
+            var recoverToken = LoginManager.GetRecoverToken(email);
+            if (recoverToken != "404")
+            {
+                return Ok(new { recover_token = recoverToken });
+            }
+            else
+            {
+                return NotFound(new { user = "not found" });
+            }
         }
         [AllowAnonymous]
         [HttpPost("{email}/verifyemail")]
         public IActionResult verifyEmail(string email)
         {
-            return Ok(new { verify_token = LoginManager.EmailConfirm(email) });
+            var emailToken = LoginManager.EmailConfirm(email);
+            if (emailToken != "404")
+            {
+                return Ok(new { verify_token = emailToken });
+            }
+            else
+            {
+                return NotFound(new { user = "not found" });
+            }
         }
         [AllowAnonymous]
         [HttpGet("{email}/verifyemail")]
         public IActionResult verifyToken(string email)
         {
-            return Ok(new { recover_token = LoginManager.GetVerifyToken(email) });
+            var emailToken = LoginManager.GetVerifyToken(email);
+            if (emailToken != "404")
+            {
+                return Ok(new { verify_token = emailToken });
+            }
+            else
+            {
+                return NotFound(new { user = "not found" });
+            }
         }
 
 

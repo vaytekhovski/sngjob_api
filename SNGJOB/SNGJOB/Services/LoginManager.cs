@@ -81,26 +81,31 @@ namespace SNGJOB.Services
 
         public string RecoverPassword(string email)
         {
-            string passwordToken = "";
+            string passwordToken = "404";
             using(DatabaseContext db = new DatabaseContext())
             {
                 var user = db.users.FirstOrDefault(x => x.email == email);
-                passwordToken = security.GenerateRandomKey(6);
-                user.passwordToken = passwordToken;
-                db.SaveChanges();
+                if (user != null)
+                {
+                    passwordToken = security.GenerateRandomKey(6);
+                    user.passwordToken = passwordToken;
+                    db.SaveChanges();
+                    mailManager.SendEmailDefaul(email, "Восстановление пароля", passwordToken);
+                }
             }
-
-            mailManager.SendEmailDefaul(email, "Восстановление пароля", passwordToken);
-
             return passwordToken;
         }
 
         public string GetRecoverToken(string email)
         {
-            string passwordToken = "";
+            string passwordToken = "404";
             using(DatabaseContext db = new DatabaseContext())
             {
-                passwordToken = db.users.AsNoTracking().FirstOrDefault(x=>x.email == email).passwordToken;
+                var user = db.users.AsNoTracking().FirstOrDefault(x => x.email == email);
+                if (user != null)
+                {
+                    passwordToken = user.passwordToken;
+                }
             }
             return passwordToken;
         }
@@ -108,28 +113,34 @@ namespace SNGJOB.Services
 
         public string EmailConfirm(string email)
         {
-            string emailToken = "";
+            string emailToken = "404";
 
             using (DatabaseContext db = new DatabaseContext())
             {
-                var user = db.users.AsNoTracking().FirstOrDefault(x => x.email == email);
-                emailToken = security.GenerateRandomKey(6);
-                var emailConfirm = db.email_confirm_tokens.FirstOrDefault(x => x.user_id == user.id);
-                emailConfirm.token = emailToken;
-                db.SaveChanges();
+                var user = db.users.FirstOrDefault(x => x.email == email);
+                if (user != null)
+                {
+                    emailToken = security.GenerateRandomKey(6);
+                    user.emailToken = emailToken;
+                    db.SaveChanges();
+                    mailManager.SendEmailDefaul(email, "Подтверждение почты", emailToken);
+                }
             }
 
-            mailManager.SendEmailDefaul(email, "Подтверждение почты", emailToken);
 
             return emailToken;
         }
 
         public string GetVerifyToken(string email)
         {
-            string emailToken = "";
+            string emailToken = "404";
             using(DatabaseContext db = new DatabaseContext())
             {
-                emailToken = db.email_confirm_tokens.AsNoTracking().FirstOrDefault(x => x.user_id == db.users.AsNoTracking().FirstOrDefault(x => x.email == email).id).token;
+                var user = db.users.AsNoTracking().FirstOrDefault(x => x.email == email);
+                if (user != null)
+                {
+                    emailToken = user.emailToken;
+                }
             }
 
             return emailToken;
