@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SNGJOB.Services;
 using Microsoft.AspNetCore.Authorization;
 using SNGJOB.Models.UserModels;
+using Microsoft.Extensions.Logging;
 
 namespace SNGJOB.Controllers
 {
@@ -13,11 +14,13 @@ namespace SNGJOB.Controllers
     {
         private LoginManager LoginManager;
         private UserManager UserManager;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(LoginManager loginManager, UserManager userManager)
+        public AccountController(ILogger<AccountController> logger,LoginManager loginManager, UserManager userManager)
         {
             LoginManager = loginManager;
             UserManager = userManager;
+            this.logger = logger;
         }
 
         [AllowAnonymous]
@@ -33,6 +36,7 @@ namespace SNGJOB.Controllers
             {
                 var token = LoginManager.GetJSONWebToken(User);
                 response = Ok(new { id = User.id, token = token });
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + user.id + "logged in");
             }
             else
             {
@@ -54,6 +58,8 @@ namespace SNGJOB.Controllers
             {
                 var token = LoginManager.GetJSONWebToken(User);
                 response = Ok(new { user = User });
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + user.id + "created");
+
             }
             else
             {
@@ -75,6 +81,7 @@ namespace SNGJOB.Controllers
                     response = NotFound();
                     break;
                 case "200":
+                    logger.LogInformation(DateTime.Now.ToShortTimeString() + "User " + UserId + "data changed");
                     response = Ok(new { response = $"User data for User {UserId} changed " });
                     break;
 
@@ -93,6 +100,7 @@ namespace SNGJOB.Controllers
             if(recoverToken != "404")
             {
                 return Ok(new { recover_token = recoverToken });
+
             }
             else
             {

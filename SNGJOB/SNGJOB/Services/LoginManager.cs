@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SNGJOB.Models.UserModels;
 using System;
 using System.Linq;
@@ -10,10 +11,11 @@ namespace SNGJOB.Services
     {
         private IConfiguration configuration;
 
+
         private Security security;
 
         private readonly MailManager mailManager;
-        public LoginManager(IConfiguration configuration, Security security, MailManager mailManager)
+        public LoginManager(IConfiguration configuration,Security security, MailManager mailManager)
         {
             this.configuration = configuration;
             this.mailManager = mailManager;
@@ -30,7 +32,6 @@ namespace SNGJOB.Services
                     .Where(x => x.password == security.Hash(login.password))
                     .FirstOrDefault();
             }
-
             return user;
         }
 

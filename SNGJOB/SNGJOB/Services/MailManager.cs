@@ -33,7 +33,7 @@ namespace SNGJOB.Services
                     client.Send(message);
                 }
 
-                logger.LogInformation("Сообщение " + recipient + " отправлено успешно!");
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + "Сообщение для " + recipient + " с темой " + subject + " отправлено успешно!");
             }
             catch (Exception e)
             {
