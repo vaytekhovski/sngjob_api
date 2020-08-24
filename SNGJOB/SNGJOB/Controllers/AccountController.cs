@@ -81,7 +81,7 @@ namespace SNGJOB.Controllers
                     response = NotFound();
                     break;
                 case "200":
-                    logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + UserId + "data changed");
+                    logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + UserId + " data changed");
                     response = Ok(new { response = $"User data for User {UserId} changed " });
                     break;
 
@@ -158,6 +158,8 @@ namespace SNGJOB.Controllers
             var response = LoginManager.DeleteUser(UserId);
             if(response != "404")
             {
+                logger.LogInformation(DateTime.Now.ToShortTimeString() + " User " + UserId + " deleted");
+
                 return Ok(new { user = UserId + " deleted" });
             }
             else
