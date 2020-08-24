@@ -57,7 +57,7 @@ namespace SNGJOB.Services
                     db.users.Add(user);
                     db.user_details.Add(userDetail);
                     db.SaveChanges();
-                    EmailConfirm(user.email);
+                    user.emailToken = EmailConfirm(user.email);
 
                 }
                 else
