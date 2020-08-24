@@ -53,7 +53,7 @@ namespace SNGJOB.Controllers
             if (User != null)
             {
                 var token = LoginManager.GetJSONWebToken(User);
-                response = Ok(new { id = User.id, token = token });
+                response = Ok(new { user = User });
             }
             else
             {
