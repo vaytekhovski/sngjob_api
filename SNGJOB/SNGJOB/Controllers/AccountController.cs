@@ -143,6 +143,20 @@ namespace SNGJOB.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpDelete("UserId/delete")]
+        public IActionResult deleteUser(Guid UserId)
+        {
+            var response = LoginManager.DeleteUser(UserId);
+            if(response != "404")
+            {
+                return Ok(new { user = UserId + " deleted" });
+            }
+            else
+            {
+                return NotFound(new { user = "not found" });
+            }
+        }
 
     }
 }

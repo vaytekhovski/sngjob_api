@@ -146,5 +146,22 @@ namespace SNGJOB.Services
             return emailToken;
         }
 
+        public string DeleteUser(Guid userId)
+        {
+            string response = "404";
+            using(DatabaseContext db = new DatabaseContext())
+            {
+                var user = db.users.FirstOrDefault(x => x.id == userId);
+                if(user != null)
+                {
+                    db.users.Remove(user);
+                    db.SaveChanges();
+                    response = "ok"; 
+                }
+            }
+
+            return response;
+        }
+
     }
 }
