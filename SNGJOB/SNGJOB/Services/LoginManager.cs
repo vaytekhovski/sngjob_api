@@ -54,6 +54,7 @@ namespace SNGJOB.Services
                 var exist_user = db.users.FirstOrDefault(x => x.email == user.email);
                 if (exist_user == null)
                 {
+                    EmailConfirm(user.email);
                     db.users.Add(user);
                     db.user_details.Add(userDetail);
                     db.SaveChanges();
