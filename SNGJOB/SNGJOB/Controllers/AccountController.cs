@@ -144,7 +144,7 @@ namespace SNGJOB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpDelete("UserId/delete")]
+        [HttpDelete("{UserId}/delete")]
         public IActionResult deleteUser(Guid UserId)
         {
             var response = LoginManager.DeleteUser(UserId);
